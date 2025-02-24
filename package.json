@@ -6,7 +6,8 @@
     "dev": "tsx watch src/index.ts",
     "start": "node dist/index.js",
     "build": "tsup src/index.ts --minify",
-    "deploy_commands": "tsx src/deploy_commands.ts"
+    "deploy_commands": "tsx src/deploy_commands.ts",
+    "start_ts": "tsx src/index.ts"
   },
   "author": "",
   "license": "ISC",
