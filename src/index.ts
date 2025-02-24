@@ -53,8 +53,16 @@ client.on(Events.InteractionCreate, async (interaction) => {
 });
 
 client.on(Events.MessageCreate, async (message) => {
-    if(message.author.bot) return;
-    const guild = await getGuild(message.guildId as string);
+    if (message.author.bot) return;
+    let guild: { guild_id: string, channel: string, last_counted_id: string, current_count: number };
+    try {
+        guild = await getGuild(message.guildId as string);
+    }
+    catch (e) {
+        console.error(e);
+        message.reply({content: "Something went wrong :( please try again"});
+        return;
+    }
     // ignore if it's not the right channel
     if (guild.channel == null || guild.channel != message.channelId) return;
     const message_eval = evalMessage(message.content);
