@@ -1,0 +1,6 @@
+{
+    "token": "token-goes-here",
+    "client_id": "client-id",
+    "mongo_uri": "connection-string-goes-here",
+    "command_prefix": "c?"
+}
