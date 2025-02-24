@@ -11,7 +11,7 @@ export function getDb(): Db {
 // Returns true if successful, false if not
 export async function setCountingChannel(guild_id: string, channel_id: string): Promise<boolean> {
     await addGuildIfNotExist(guild_id);
-    const db_res = await db.collection("guilds").updateOne({ guild_id: guild_id }, { $set: { channel: channel_id } }, { upsert: true });
+    const db_res = await db.collection("guilds").updateOne({ guild_id: guild_id }, { $set: { channel: channel_id } });
     return db_res.acknowledged;
 }
 
@@ -30,7 +30,7 @@ export async function getCountingChannel(guild_id: string): Promise<string | nul
 // Returns true if successful, false if not
 export async function updateCount(guild_id: string, new_count: number): Promise<boolean> {
     await addGuildIfNotExist(guild_id);
-    const db_res = await db.collection("guilds").updateOne({ guild_id: guild_id }, { $set: { current_count: new_count } }, { upsert: true });
+    const db_res = await db.collection("guilds").updateOne({ guild_id: guild_id }, { $set: { current_count: new_count } });
     return db_res.acknowledged;
 }
 
@@ -50,6 +50,6 @@ export async function getGuild(guild_id: string): Promise<{guild_id: string, cha
 
 export async function setLastCountedId(guild_id: string, last_counted_id: string): Promise<boolean> {
     await addGuildIfNotExist(guild_id);
-    const db_res = await db.collection("guilds").updateOne({ guild_id: guild_id }, { $set: { last_counted_id: last_counted_id } }, { upsert: true });
+    const db_res = await db.collection("guilds").updateOne({ guild_id: guild_id }, { $set: { last_counted_id: last_counted_id } });
     return db_res.acknowledged;
 }
