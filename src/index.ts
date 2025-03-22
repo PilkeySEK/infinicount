@@ -100,6 +100,7 @@ client.on(Events.MessageCreate, async (message) => {
 });
 
 client.on(Events.MessageDelete, async (message) => {
+    console.log(`Detected MessageDelete: ${message}`);
     if(message.author == null) return;
     if (message.author.bot) return;
     let guild: { guild_id: string, channel: string, last_counted_id: string, current_count: number };
