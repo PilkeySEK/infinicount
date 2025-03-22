@@ -99,4 +99,27 @@ client.on(Events.MessageCreate, async (message) => {
     }
 });
 
+client.on(Events.MessageDelete, async (message) => {
+    if(message.author == null) return;
+    if (message.author.bot) return;
+    let guild: { guild_id: string, channel: string, last_counted_id: string, current_count: number };
+    try {
+        guild = await getGuild(message.guildId as string);
+    }
+    catch (e) {
+        console.error(e);
+        message.reply({content: "Something went wrong :( please try again"});
+        return;
+    }
+    // ignore if it's not the right channel
+    if (guild.channel == null || guild.channel != message.channelId) return;
+    if(message.content == null) return;
+    const message_eval = evalMessage(message.content);
+    if (message_eval == undefined) return;
+    if(isComplex(message_eval)) return;
+    if(message_eval == guild.current_count) {
+        message.channel.send({content: `**Warning!**\n${message.author} deleted their message: \`${message.content}\`.\nThe next number is \`${guild.current_count+1}\`.`});
+    }
+});
+
 client.login(token);
