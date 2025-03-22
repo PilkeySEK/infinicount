@@ -10,7 +10,17 @@ const exclusions = [
     ";3",
     "{}",
     "[]",
-    "V"
+    "V",
+    "S",
+    "E",
+    "F",
+    "J",
+    "K",
+    "L",
+    "N",
+    "W",
+    "T",
+    
 ]
 
 export function evalMessage(content: string): number | Complex | undefined {
