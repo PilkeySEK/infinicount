@@ -123,4 +123,27 @@ client.on(Events.MessageDelete, async (message) => {
     }
 });
 
+client.on(Events.MessageUpdate, async (oldMessage, newMessage) => {
+    console.log(`Detected MessageUpdate: ${oldMessage} -> ${newMessage}`);
+    if (newMessage.author.bot) return;
+    let guild: { guild_id: string, channel: string, last_counted_id: string, current_count: number };
+    try {
+        guild = await getGuild(newMessage.guildId as string);
+    }
+    catch (e) {
+        console.error(e);
+        newMessage.reply({content: "Something went wrong :( please try again"});
+        return;
+    }
+    // ignore if it's not the right channel
+    if (guild.channel == null || guild.channel != newMessage.channelId) return;
+    if(oldMessage.content == null) return;
+    const message_eval = evalMessage(oldMessage.content);
+    if (message_eval == undefined) return;
+    if(isComplex(message_eval)) return;
+    if(message_eval == guild.current_count) {
+        newMessage.channel.send({content: `**Warning!**\n${newMessage.author} edited their message: \`${oldMessage.content}\` --> \`${newMessage.content}\`.\nThe next number is \`${guild.current_count+1}\`.`});
+    }
+});
+
 client.login(token);
