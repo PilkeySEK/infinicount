@@ -35,14 +35,14 @@ export async function updateCount(guild_id: string, new_count: number): Promise<
 }
 
 export async function getCount(guild_id: string): Promise<number> {
-    addGuildIfNotExist(guild_id);
+    await addGuildIfNotExist(guild_id);
     const guild = await db.collection("guilds").findOne({ guild_id: guild_id });
     if(guild == null) return 0;
     return guild.current_count;
 }
 
 export async function getGuild(guild_id: string): Promise<{guild_id: string, channel: string, last_counted_id: string, current_count: number}> {
-    addGuildIfNotExist(guild_id);
+    await addGuildIfNotExist(guild_id);
     const guild = await db.collection("guilds").findOne({ guild_id: guild_id });
     if(guild == null) throw Error("Database did not return anything. Is it down?");
     return {guild_id: guild.guild_id, channel: guild.channel, last_counted_id: guild.last_counted_id, current_count: guild.current_count};
