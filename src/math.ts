@@ -1,7 +1,7 @@
 import { Complex, evaluate, isComplex } from "mathjs";
 
 // If a message matches these EXACTLY, don't count it
-const exclusions = [":3", "s", "br", "e", "g", ";3", "{}", "[]", "V", "S", "E", "F", "J", "K", "L", "N", "W", "T"]
+const exclusions = [":3", "s", "br", "e", "g", ";3", "{}", "[]", "V", "S", "E", "F", "J", "K", "L", "N", "W", "T", "b"]
 
 export function evalMessage(content: string): number | Complex | undefined {
     if (content.startsWith('`') && content.endsWith('`')) {
