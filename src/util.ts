@@ -14,6 +14,7 @@ export function sanitizeMessage(message: string): string {
     newString = newString.replace("@everyone", "");
     newString = newString.replace("@here", "");
     newString = newString.replace("`", "")
+    newString = newString.replace("\\", "");
     newString = newString.substring(0, 100);
     return newString;
 }
