@@ -142,7 +142,7 @@ client.on(Events.MessageUpdate, async (oldMessage, newMessage) => {
     if (message_eval == undefined) return;
     if(isComplex(message_eval)) return;
     if(message_eval == guild.current_count) {
-        newMessage.channel.send({content: `**Warning!**\n${newMessage.author} edited their message: \`${sanitizeMessage(oldMessage.content)}\` --> \`${sanitizeMessage(newMessage.content)}\`.\nThe next number is \`${guild.current_count+1}\`.`, allowedMentions: {parse: []}});
+        newMessage.reply({content: `**Warning!**\n${newMessage.author} edited their message: \`${sanitizeMessage(oldMessage.content)}\` --> \`${sanitizeMessage(newMessage.content)}\`.\nThe next number is \`${guild.current_count+1}\`.`, allowedMentions: {parse: []}});
     }
 });
 
