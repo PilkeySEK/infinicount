@@ -1,8 +1,8 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { Client, Collection, EmbedBuilder, Events, GatewayIntentBits, MessageFlags, SlashCommandBuilder } from "discord.js";
+import { Client, Collection, EmbedBuilder, Events, GatewayIntentBits, MessageFlags, MessageMentions, SlashCommandBuilder } from "discord.js";
 import { token } from "../config.json";
-import { Command } from "./util";
+import { Command, sanitizeMessage } from "./util";
 import { getCount, getCountingChannel, getGuild, setLastCountedId, updateCount } from "./mongo";
 import { evalMessage } from "./math";
 import { isComplex } from "mathjs";
@@ -68,7 +68,7 @@ client.on(Events.MessageCreate, async (message) => {
     const message_eval = evalMessage(message.content);
     if (message_eval == undefined) return;
     if (isComplex(message_eval)) {
-        message.reply({ content: `Complex numbers are not supported for counting, but here's your result: \`${message_eval}\`` });
+        message.reply({ content: `Complex numbers are not supported for counting, but here's your result: \`${sanitizeMessage(message_eval.toString())}\``, allowedMentions: {parse: []} });
         return;
     }
     if (guild.current_count + 1 == message_eval) {
@@ -119,7 +119,7 @@ client.on(Events.MessageDelete, async (message) => {
     if (message_eval == undefined) return;
     if(isComplex(message_eval)) return;
     if(message_eval == guild.current_count) {
-        message.channel.send({content: `**Warning!**\n${message.author} deleted their message: \`${message.content}\`.\nThe next number is \`${guild.current_count+1}\`.`});
+        message.channel.send({content: `**Warning!**\n${message.author} deleted their message: \`${sanitizeMessage(message.content)}\`.\nThe next number is \`${guild.current_count+1}\`.`, allowedMentions: {parse: []}});
     }
 });
 
@@ -142,7 +142,7 @@ client.on(Events.MessageUpdate, async (oldMessage, newMessage) => {
     if (message_eval == undefined) return;
     if(isComplex(message_eval)) return;
     if(message_eval == guild.current_count) {
-        newMessage.channel.send({content: `**Warning!**\n${newMessage.author} edited their message: \`${oldMessage.content}\` --> \`${newMessage.content}\`.\nThe next number is \`${guild.current_count+1}\`.`});
+        newMessage.channel.send({content: `**Warning!**\n${newMessage.author} edited their message: \`${sanitizeMessage(oldMessage.content)}\` --> \`${sanitizeMessage(newMessage.content)}\`.\nThe next number is \`${guild.current_count+1}\`.`, allowedMentions: {parse: []}});
     }
 });
 
