@@ -11,10 +11,10 @@ export class Command {
 
 export function sanitizeMessage(message: string): string {
     let newString = message;
-    newString = newString.replace("@everyone", "");
-    newString = newString.replace("@here", "");
-    newString = newString.replace("`", "")
-    newString = newString.replace("\\", "");
+    newString = newString.split("@everyone").join("");
+    newString = newString.split("@here").join("");
+    newString = newString.split("`").join("");
+    newString = newString.split("\\").join("");
     newString = newString.substring(0, 100);
     return newString;
 }
