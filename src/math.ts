@@ -1,12 +1,13 @@
 import { Complex, evaluate, isComplex } from "mathjs";
 
 // If a message matches these EXACTLY, don't count it
-const exclusions = [":3", "s", "br", "e", "g", ";3", "{}", "[]", "V", "S", "E", "F", "J", "K", "L", "N", "W", "T", "b"]
+const exclusions = [":3", "s", "br", "e", "g", ";3", "{}", "[]", "V", "S", "E", "F", "J", "K", "L", "N", "W", "T", "b", "help"]
 
 export function evalMessage(content: string): number | Complex | undefined {
     if (content.startsWith('`') && content.endsWith('`')) {
         content = content.substring(1, content.length - 1);
     }
+    if(!validMath(content)) return undefined;
     let math_res: number | Complex | undefined;
     try {
         math_res = evaluate(content);
@@ -24,4 +25,16 @@ export function evalMessage(content: string): number | Complex | undefined {
     if (exclusions.includes(content)) return undefined;
     console.log(`Result of "${content}": ${math_res}`);
     return math_res;
+}
+
+export function validMath(content: string): boolean {
+    const alphabet = "abcdefghijklmnopqrstuvwxyz";
+    let hasSeenNonAlphabet = false;
+    for(let i = 0; i < content.length; i++) {
+        if(!alphabet.includes(content)) {
+            hasSeenNonAlphabet = true;
+            break;
+        }
+    }
+    return hasSeenNonAlphabet;
 }
