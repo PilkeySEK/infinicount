@@ -21,7 +21,7 @@ export function evalMessage(content: string): number | Complex | undefined {
             math_res = parseInt(math_res.toString());
         }
     }
-    if (exclusions.includes(math_str)) return undefined;
+    if (exclusions.includes(content)) return undefined;
     console.log(`Result of "${content}": ${math_res}`);
     return math_res;
 }
