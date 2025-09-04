@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { Client, Collection, EmbedBuilder, Events, GatewayIntentBits, MessageFlags, MessageMentions, SlashCommandBuilder } from "discord.js";
-import { token } from "../config.json";
+import { token, superusers } from "../config.json";
 import { Command, sanitizeMessage } from "./util";
 import { getCount, getCountingChannel, getGuild, setLastCountedId, updateCount } from "./mongo";
 import { evalMessage } from "./math";
@@ -61,6 +61,13 @@ client.on(Events.MessageCreate, async (message) => {
     catch (e) {
         console.error(e);
         message.reply({content: "Something went wrong :( please try again"});
+        return;
+    }
+    if(superusers.includes(message.author.id) && message.content.startsWith("$$infinicount$$~ setcount ")) {
+        const count = parseInt(message.content.substring("$$infinicount$$~ setcount ".length));
+        await updateCount(message.guildId as string, count);
+        await setLastCountedId(message.guildId as string, "0");
+        await message.reply("[superuser] updated count to " + count);
         return;
     }
     // ignore if it's not the right channel
