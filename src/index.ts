@@ -78,6 +78,7 @@ client.on(Events.MessageCreate, async (message) => {
         message.reply({ content: `Complex numbers are not supported for counting, but here's your result: \`${sanitizeMessage(message_eval.toString())}\``, allowedMentions: {parse: []} });
         return;
     }
+    if (typeof message_eval != "number") return; // when listen for messages ignore every non-number.
     if (guild.current_count + 1 == message_eval) {
         if (message.author.id == guild.last_counted_id && guild.current_count != 0) {
             message.react("❌");
@@ -125,6 +126,7 @@ client.on(Events.MessageDelete, async (message) => {
     const message_eval = evalMessage(message.content);
     if (message_eval == undefined) return;
     if(isComplex(message_eval)) return;
+    if (typeof message_eval != "number") return;
     if(message_eval == guild.current_count) {
         message.channel.send({content: `**Warning!**\n${message.author} deleted their message: \`${sanitizeMessage(message.content)}\`.\nThe next number is \`${guild.current_count+1}\`.`, allowedMentions: {parse: []}});
     }
